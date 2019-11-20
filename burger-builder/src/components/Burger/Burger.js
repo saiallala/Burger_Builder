@@ -3,20 +3,25 @@ import classes from './Burger.css';
 import BurgerIng from './BurgerIng/BurgerIng';
 
 const burger = (props) => {
-    // tranforms an object into an array of key-value pairs where the value is important for how many of the
-    // ingridients there are and the key is important for what type of ingridient it is
+    let transformedIngredients = Object.keys( props.ingredients  )
+        .map( igKey => {
+            return [...Array( props.ingredients[igKey] )].map( ( _, i ) => {
+                return <BurgerIng key={igKey + i} type={igKey} />;
+            } );
+        } )
+        .reduce((arr, el) => {
+            return arr.concat(el)
+        }, []);
+        console.log(transformedIngredients);
 
-    const transformedIngridients = Object.keys(props.ingridients)
-        .map(igKey => {
-            return [...Array(props.ingridients[igKey])].map((_, i) => {
-                return <BurgerIng key={igKey + i} type = {igKey} />
-            });
-        });
+        if(transformedIngredients === 0){
+            transformedIngredients = <p> Add ingredients </p>
+        }
         
     return(
         <div className = {classes.Burger}>
             <BurgerIng type="bread-top" />
-                {transformedIngridients}
+                {transformedIngredients}
             <BurgerIng type="bread-bottom" />
         </div>
     );
